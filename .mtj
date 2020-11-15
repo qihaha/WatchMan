@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mtjMetadata jad="PahoMqtt.jad" version="2.0.1.201912160916">
+<mtjMetadata jad="PahoMqtt.jad" version="2.0.1.202010281107">
    <device group="Josh Device SDK" name="ESP32_JOSHKIT"/>
    <signing projectSpecific="false" signProject="false">
       <alias/>

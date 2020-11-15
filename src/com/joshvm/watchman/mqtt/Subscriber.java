@@ -11,6 +11,7 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 public class Subscriber {
 
 	private MqttClient mqttClient;
+	
 
 	public Subscriber(String serverUri, String clientId, String userName, String password, String topic, MqttCallback callback) {
 		try {

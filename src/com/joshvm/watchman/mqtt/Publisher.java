@@ -12,6 +12,7 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 public class Publisher {
 
 	private MqttClient mqttClient;
+	
 
 	public Publisher(String serverUri, String clientId, String userName, String password) {
 		try {
