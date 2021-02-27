@@ -1,4 +1,4 @@
-package com.joshvm.watchman.gps;
+package com.joshvm.watchman.utils;
 import javax.microedition.location.Location;
 import javax.microedition.location.LocationListener;
 import javax.microedition.location.LocationProvider;

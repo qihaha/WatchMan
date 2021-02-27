@@ -1,4 +1,4 @@
-package com.joshvm.watchman.uart;
+package com.joshvm.watchman.utils;
 
 import java.io.IOException;
 import java.io.InputStream;

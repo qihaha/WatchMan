@@ -11,9 +11,13 @@ import javax.microedition.io.file.FileConnection;
  * 提供文件读写
  *
  */
-public class FileUtil {
+public class FileUtils {
 	
-	private static String configFileName = "config.txt";
+	private static String configFileName = "config";
+	private static final String gpioFilePrefix = "gpio";
+	public static final int GPIO_WL=2;
+	public static final int GPIO_ELE=4;
+	public static final int GPIO_GPS=6;
 
 	public static void main(String[] args) {
 
@@ -26,13 +30,9 @@ public class FileUtil {
 			
 	}
 	
-	public static String readConfig(String key){
-		String value = "";
+	public static int readConfig(int key){
 		String configStr = read(configFileName);
-		int keyStart = configStr.indexOf(key+"=");
-		int keyEnd = configStr.indexOf("\n", keyStart);
-		value = configStr.substring(keyStart,keyEnd);
-		return value;
+		return CommonUtils.hexToDecimal(configStr.substring(key,key+2));
 	}
 	
 	public static String readConfig(){
@@ -41,7 +41,18 @@ public class FileUtil {
 	
 	public static String writeConfig(String text){
 		write(configFileName,text);
-		return read(configFileName);
+		return readConfig();
+	}
+	
+	public static String readGpioStatus(int index){
+		String fileName = gpioFilePrefix+index;
+		return read(fileName);
+	}
+	
+	public static String writeGpioStatus(int index, String status){
+		String fileName = gpioFilePrefix+index;
+		write(fileName,status);
+		return read(fileName);
 	}
 	
 	private static void write(String fileName,String message) {

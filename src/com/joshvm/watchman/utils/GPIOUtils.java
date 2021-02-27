@@ -1,4 +1,4 @@
-package com.joshvm.watchman.gpio;
+package com.joshvm.watchman.utils;
 
 import org.joshvm.j2me.dio.DeviceManager;
 import org.joshvm.j2me.dio.gpio.GPIOPin;
@@ -37,6 +37,10 @@ public class GPIOUtils {
 
 	}
 	
+	public static boolean gpioSwitch(int index, String status) {
+		return gpioSwitch(index, "01".equals(status)?true:false);
+	}
+	
 	public static boolean gpioSwitch(int index, boolean status) {
 		boolean relStatus = status;
 		try {
@@ -46,6 +50,7 @@ public class GPIOUtils {
 			outputGpio = (GPIOPin) DeviceManager.open(cfgOutput, DeviceManager.EXCLUSIVE);
 			outputGpio.setValue(status);
 			relStatus = outputGpio.getValue();
+			FileUtils.writeGpioStatus(index, relStatus?"1":"0");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
