@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="res"/>
-	<classpathentry kind="con" path="org.elipse.mtj.JavaMEContainer/Josh Device SDK/ESP32_JOSHKIT"/>
+	<classpathentry kind="con" path="org.elipse.mtj.JavaMEContainer/Josh Device SDK/JOSHDTU_LSQADB_V1"/>
 	<classpathentry kind="lib" path="lib/JoshPahoMqtt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

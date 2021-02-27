@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mtjMetadata jad="PahoMqtt.jad" version="2.0.1.202010281107">
-   <device group="Josh Device SDK" name="ESP32_JOSHKIT"/>
+<mtjMetadata jad="RemoteTest.jad" version="2.0.1.202012170843">
+   <device group="Josh Device SDK" name="JOSHDTU_LSQADB_V1"/>
    <signing projectSpecific="false" signProject="false">
       <alias/>
    </signing>
    <configurations>
-      <configuration active="true" name="ESP32_JOSHKIT">
-         <device group="Josh Device SDK" name="ESP32_JOSHKIT"/>
-         <symbolSet name="ESP32_JOSHKIT">
-            <symbol name="apis.supported" value="CLDC-1.1.1,JOSHVM-1.0,JSR75-1.0,JOSHCellular-1.0,JOSHUtil-1.0,JOSHDIO-1.0,GCF-1.0,DirectUI-1.0,CryptoAPI-1.0,XMLAPI-1.0,JOSHMediaAPI-1.0"/>
+      <configuration active="true" name="JOSHDTU_LSQADB_V1">
+         <device group="Josh Device SDK" name="JOSHDTU_LSQADB_V1"/>
+         <symbolSet name="JOSHDTU_LSQADB_V1">
+            <symbol name="apis.supported" value="CLDC-1.1.1,JOSHVM-1.0,WMA-1.1,JSR75-1.0,JOSHCellular-1.0,JOSHUtil-1.0,JOSHDIO-1.0,GCF-1.0,JSR179-1.0,DirectUI-1.0,CryptoAPI-1.0,XMLAPI-1.0,JOSHRemote-1.0"/>
             <symbol name="version.configuration" value="CLDC-1.1.1"/>
+            <symbol name="WMA" value="1.1"/>
             <symbol name="GCF" value="1.0"/>
-            <symbol name="descriptor" value="ESP32 JOSH-KIT Developer Board"/>
+            <symbol name="JOSHRemote" value="1.0"/>
+            <symbol name="descriptor" value="JOSH DTU Device (LongSung Module)"/>
             <symbol name="JOSHCellular" value="1.0"/>
+            <symbol name="JSR179" value="1.0"/>
             <symbol name="JOSHCrypto" value="1.0"/>
             <symbol name="CLDC" value="1.1"/>
             <symbol name="JOSHVM" value="1.0"/>
             <symbol name="JOSHDirectUI" value="1.0"/>
             <symbol name="JOSHUtil" value="1.0"/>
-            <symbol name="JOSHMedia" value="1.0"/>
             <symbol name="JSR75" value="1.0"/>
             <symbol name="JOSHDIO" value="1.0"/>
             <symbol name="JSR280" value="1.0"/>

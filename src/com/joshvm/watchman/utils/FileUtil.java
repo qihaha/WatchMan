@@ -1,0 +1,169 @@
+package com.joshvm.watchman.utils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import javax.microedition.io.Connector;
+import javax.microedition.io.file.FileConnection;
+
+/**
+ * 提供文件读写
+ *
+ */
+public class FileUtil {
+	
+	private static String configFileName = "config.txt";
+
+	public static void main(String[] args) {
+
+		System.out.println("     ==========     Start File Demo...");
+		String fileName = "abc.txt";
+		write(fileName,"nihao");
+		System.out.println("read:"+read(fileName));
+		write(fileName,"xiaomei");
+		System.out.println("read:"+read(fileName));
+			
+	}
+	
+	public static String readConfig(String key){
+		String value = "";
+		String configStr = read(configFileName);
+		int keyStart = configStr.indexOf(key+"=");
+		int keyEnd = configStr.indexOf("\n", keyStart);
+		value = configStr.substring(keyStart,keyEnd);
+		return value;
+	}
+	
+	public static String readConfig(){
+		return read(configFileName);
+	}
+	
+	public static String writeConfig(String text){
+		write(configFileName,text);
+		return read(configFileName);
+	}
+	
+	private static void write(String fileName,String message) {
+
+		String fileURI = "/Phone/" + fileName;
+		
+		OutputStream outputStream = null;
+		FileConnection fileConnection = null;
+
+		try {
+
+			// 创建FileConnection , 目前file:///Phone/根目录是固定的
+			fileConnection = (FileConnection) Connector.open("file://"+fileURI);
+			if (!fileConnection.exists()) {
+				// 创建File
+				fileConnection.create();
+				System.out.println("     ==========      Creat files success....");
+			}
+
+			// 写入File
+			outputStream = fileConnection.openOutputStream();
+			outputStream.write(message.getBytes());
+			System.out.println("     ==========      Write file success....");
+			
+			outputStream.close();
+			outputStream = null;
+			fileConnection.close();
+			fileConnection = null;
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (outputStream != null) {
+				try {
+					outputStream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			if (fileConnection != null) {
+				try {
+					fileConnection.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	private static String read(String fileName) {
+
+		String fileURI = "/Phone/" + fileName;
+		InputStream inputStream = null;
+		FileConnection fileConnection = null;
+		String text = "";
+
+		try {
+			// 读File
+			fileConnection = (FileConnection) Connector.open("file://"+fileURI);
+			
+			if (!fileConnection.exists()) {
+				fileConnection.close();
+				System.out.println("     ==========      File reading error! Can't open file to read.");
+				throw new IOException("Can't read file "+fileURI);
+			}
+			
+			inputStream = fileConnection.openInputStream();
+			byte[] buffer = new byte[256];
+			int readLen = 0;
+			while ((readLen = inputStream.read(buffer)) != -1) {
+				System.out.println("     ==========      Read file success....");
+				System.out.println(new String(buffer, 0, readLen));
+				text+=new String(buffer, 0, readLen);
+			}
+			
+			inputStream.close();
+			inputStream = null;
+			fileConnection.close();
+			fileConnection = null;
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (inputStream != null) {
+				try {
+					inputStream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			if (fileConnection != null) {
+				try {
+					fileConnection.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return text;
+	}
+	
+	
+	private static void delete(String fileName) {
+		
+		String fileURI = "/Phone/" + fileName;
+		FileConnection fileConnection = null;
+		try {
+			fileConnection = null;	
+			// 删除文件
+			fileConnection = (FileConnection) Connector.open("file://"+fileURI);
+			if (fileConnection.exists()) {
+
+				fileConnection.delete();
+				System.out.println("     ==========      Delete file success....");
+			} else {
+				System.out.println("     ==========      Error. Can't find file to delete");
+			}
+			fileConnection.close();
+			fileConnection = null;
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+		
+	}
+}
