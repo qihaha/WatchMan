@@ -15,9 +15,9 @@ public class FileUtils {
 	
 	private static String configFileName = "config";
 	private static final String gpioFilePrefix = "gpio";
-	public static final int GPIO_WL=2;
-	public static final int GPIO_ELE=4;
-	public static final int GPIO_GPS=6;
+	public static final int SLEEP_WL=2;
+	public static final int SLEEP_ELE=4;
+	public static final int SLEEP_GPS=6;
 
 	public static void main(String[] args) {
 

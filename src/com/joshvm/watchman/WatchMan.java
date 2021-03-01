@@ -32,8 +32,8 @@ public class WatchMan {
 	public static final String CLIENT_ID = CommonUtils.getImei();
 	public static final String USER_NAME = "admin";
 	public static final String PASSWORD = "password";
-	public static final String TOPIC_DATA = "broker_data";
-	public static final String TOPIC_ACTION = "broker_action";
+	public static final String TOPIC_DATA = "wm_data";
+	public static final String TOPIC_ACTION = "wm_action";
 
 
 	public static void main(String[] args) {
@@ -93,8 +93,8 @@ public class WatchMan {
 						String location = GpsUtils.getLocation();
 						System.out.println("[data] gps:"+location);
 						publisher.push(WatchMan.TOPIC_DATA, location);
-						int sleepSecond = FileUtils.readConfig(FileUtils.GPIO_GPS);
-						Thread.sleep(sleepSecond*1000);
+						int sleepSecond = FileUtils.readConfig(FileUtils.SLEEP_GPS);
+						Thread.sleep((sleepSecond==0?1:sleepSecond)*1000);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -109,8 +109,8 @@ public class WatchMan {
 						String data = new UartUtils(WatchMan.COM,WatchMan.BAUDRATE,WatchMan.WL_BYTE).read();
 						publisher.push(WatchMan.TOPIC_DATA, data);
 						System.out.println("[data] waterLevel:"+data);
-						int sleepSecond = FileUtils.readConfig(FileUtils.GPIO_WL);
-						Thread.sleep(sleepSecond*1000);
+						int sleepSecond = FileUtils.readConfig(FileUtils.SLEEP_WL);
+						Thread.sleep((sleepSecond==0?1:sleepSecond)*1000);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -125,8 +125,8 @@ public class WatchMan {
 						String data = new UartUtils(WatchMan.COM,WatchMan.BAUDRATE,WatchMan.ELE_BYTE).read();
 						publisher.push(WatchMan.TOPIC_DATA, data);
 						System.out.println("[data] electricity:"+data);
-						int sleepSecond = FileUtils.readConfig(FileUtils.GPIO_ELE);
-						Thread.sleep(sleepSecond*1000);
+						int sleepSecond = FileUtils.readConfig(FileUtils.SLEEP_ELE);
+						Thread.sleep((sleepSecond==0?1:sleepSecond)*1000);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
