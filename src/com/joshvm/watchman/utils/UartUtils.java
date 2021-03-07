@@ -20,7 +20,26 @@ public class UartUtils {
 		this.cmd = cmd;
 	}
 
-	public String read() {
+	public void sendCmd() {
+		try {
+			String host = "comm:" + com + ";baudrate=" + baudrate;
+			streamConnection = (StreamConnection) Connector.open(host);
+			inputStream = streamConnection.openInputStream();
+			outputStream = streamConnection.openOutputStream();
+			outputStream.write(cmd, 0, cmd.length);
+			System.out.println("[debug] sendCmd:" + cmd);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				closeStream();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public String sendCmdRead() {
 		final StringBuffer receiveData = new StringBuffer();
 		try {
 			String host = "comm:" + com + ";baudrate=" + baudrate;

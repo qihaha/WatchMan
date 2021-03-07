@@ -9,6 +9,7 @@ import javax.microedition.io.file.FileConnection;
 
 /**
  * 提供文件读写
+ * /data/joshvm/user/
  *
  */
 public class FileUtils {
@@ -32,7 +33,11 @@ public class FileUtils {
 	
 	public static int readConfig(int key){
 		String configStr = read(configFileName);
-		return CommonUtils.hexToDecimal(configStr.substring(key,key+2));
+		if(configStr.length()!=8){
+			return 0;
+		}else{
+			return CommonUtils.hexToDecimal(configStr.substring(key,key+2));
+		}
 	}
 	
 	public static String readConfig(){
@@ -40,7 +45,12 @@ public class FileUtils {
 	}
 	
 	public static String writeConfig(String text){
-		write(configFileName,text);
+		// 文件读写的时候是按位替换的，所以长度需要固定
+		String confStr = text;
+		if(text.length()>8){
+			confStr=text.substring(0, 8);
+		}
+		write(configFileName,confStr);
 		return readConfig();
 	}
 	
@@ -69,13 +79,13 @@ public class FileUtils {
 			if (!fileConnection.exists()) {
 				// 创建File
 				fileConnection.create();
-				System.out.println("     ==========      Creat files success....");
+//				System.out.println("[debug] Creat files success....");
 			}
 
 			// 写入File
 			outputStream = fileConnection.openOutputStream();
 			outputStream.write(message.getBytes());
-			System.out.println("     ==========      Write file success....");
+//			System.out.println("[debug] Write file success....");
 			
 			outputStream.close();
 			outputStream = null;
@@ -115,7 +125,7 @@ public class FileUtils {
 			
 			if (!fileConnection.exists()) {
 				fileConnection.close();
-				System.out.println("     ==========      File reading error! Can't open file to read.");
+//				System.out.println("[debug] File reading error! Can't open file to read.");
 				throw new IOException("Can't read file "+fileURI);
 			}
 			
@@ -123,8 +133,8 @@ public class FileUtils {
 			byte[] buffer = new byte[256];
 			int readLen = 0;
 			while ((readLen = inputStream.read(buffer)) != -1) {
-				System.out.println("     ==========      Read file success....");
-				System.out.println(new String(buffer, 0, readLen));
+//				System.out.println("[debug] Read file success....");
+//				System.out.println(new String(buffer, 0, readLen));
 				text+=new String(buffer, 0, readLen);
 			}
 			
@@ -166,9 +176,9 @@ public class FileUtils {
 			if (fileConnection.exists()) {
 
 				fileConnection.delete();
-				System.out.println("     ==========      Delete file success....");
+//				System.out.println("[debug] Delete file success....");
 			} else {
-				System.out.println("     ==========      Error. Can't find file to delete");
+//				System.out.println("[debug] Error. Can't find file to delete");
 			}
 			fileConnection.close();
 			fileConnection = null;

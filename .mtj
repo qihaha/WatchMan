@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mtjMetadata jad="RemoteTest.jad" version="2.0.1.202012170843">
+<mtjMetadata jad="RemoteTest.jad" version="2.0.1.202010281107">
    <device group="Josh Device SDK" name="JOSHDTU_LSQADB_V1"/>
    <signing projectSpecific="false" signProject="false">
       <alias/>

@@ -16,7 +16,7 @@ public class GpsUtils {
 		String locationStr = "";
 		try {
 			LocationProvider gpsProvider = LocationProvider.getInstance(null);
-			Location location = gpsProvider.getLocation(60); // timeout: 60 secs
+			Location location = gpsProvider.getLocation(3); // 这个时间阻塞等待，时间太长的话返回结果太慢
 			locationStr = getLocationString(location);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -26,11 +26,12 @@ public class GpsUtils {
 	
 	private static String getLocationString(Location location) {
 		if (location == null) {
-			return "null";
+			return "nulla";
 		}
+		System.out.println("dddd:"+location.toString());
 		QualifiedCoordinates coodinate = location.getQualifiedCoordinates();
 		if (coodinate == null) {
-			return "null";
+			return "nullb";
 		}
 		StringBuffer buf = new StringBuffer();
 		buf.append("latitude:" + coodinate.getLatitude()).append(",");

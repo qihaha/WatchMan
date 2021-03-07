@@ -6,6 +6,8 @@ import org.joshvm.j2me.cellular.CellularDeviceInfo;
 
 public class CommonUtils {
 
+	public static boolean isSubscriberStoped = true;
+	
 	public static String getImei() {
 
 		String imei = "";

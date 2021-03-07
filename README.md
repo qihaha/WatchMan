@@ -11,3 +11,10 @@ login:admin/password
 
 test utils:
 download url: http://www.jensd.de/apps/mqttfx/1.7.1/mqttfx-1.7.1-windows-x64.exe
+
+adb push JOSHDTU_LSQADB_V1/watchman.jar /vendor/data
+adb shell cldc_vm -int -cp /vendor/data/watchman.jar com.joshvm.watchman.WatchMan
+
+action:
+0103141D
+020A01
