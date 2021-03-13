@@ -7,25 +7,29 @@ import javax.microedition.io.Connector;
 import javax.microedition.io.StreamConnection;
 
 public class UartUtils {
-	private String com = "COM0";
-	private int baudrate = 9600;
-	private byte[] cmd = new byte[] { 1, 3, 1, 2, 0, 1, 36, 54 };
 	private static StreamConnection streamConnection;
-	private static InputStream inputStream;
-	private static OutputStream outputStream;
+	private InputStream inputStream;
+	private OutputStream outputStream;
 
-	public UartUtils(String com, int baudrate, byte[] cmd) {
-		this.com = com;
-		this.baudrate = baudrate;
-		this.cmd = cmd;
-	}
-
-	public void sendCmd() {
+	public UartUtils(String com, int baudrate) {
 		try {
 			String host = "comm:" + com + ";baudrate=" + baudrate;
 			streamConnection = (StreamConnection) Connector.open(host);
 			inputStream = streamConnection.openInputStream();
 			outputStream = streamConnection.openOutputStream();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				closeStream();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void sendCmd(byte[] cmd) {
+		try {
 			outputStream.write(cmd, 0, cmd.length);
 			System.out.println("[debug] sendCmd:" + cmd);
 		} catch (Exception e) {
@@ -39,7 +43,11 @@ public class UartUtils {
 		}
 	}
 	
-	public String sendCmdRead() {
+	public InputStream getInputStream(){
+		return inputStream;
+	}
+	
+/*	public String readCmd() {
 		final StringBuffer receiveData = new StringBuffer();
 		try {
 			String host = "comm:" + com + ";baudrate=" + baudrate;
@@ -73,9 +81,9 @@ public class UartUtils {
 			}
 		}
 		return receiveData.toString();
-	}
+	}*/
 
-	private static void closeStream() throws IOException {
+	private void closeStream() throws IOException {
 		if (inputStream != null) {
 			inputStream.close();
 		}
@@ -88,19 +96,4 @@ public class UartUtils {
 
 	}
 
-	private static String byte2hex(byte[] data) {
-		return byte2hex(data, data.length);
-	}
-
-	private static String byte2hex(byte[] data, int len) {
-		StringBuffer stringBuffer = new StringBuffer();
-		for (int i = 0; i < len; ++i) {
-			if (data[i] < 16 && data[i] > -1) {
-				stringBuffer.append("0" + Integer.toHexString(data[i] & 255) + " ");
-			} else {
-				stringBuffer.append(Integer.toHexString(data[i] & 255) + " ");
-			}
-		}
-		return stringBuffer.toString();
-	}
 }

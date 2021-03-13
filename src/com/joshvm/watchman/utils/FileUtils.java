@@ -16,9 +16,11 @@ public class FileUtils {
 	
 	private static String configFileName = "config";
 	private static final String gpioFilePrefix = "gpio";
+	private static final String modelFile = "model";
 	public static final int SLEEP_WL=2;
 	public static final int SLEEP_ELE=4;
 	public static final int SLEEP_GPS=6;
+	public static final int SLEEP_GPIO=8;
 
 	public static void main(String[] args) {
 
@@ -33,7 +35,7 @@ public class FileUtils {
 	
 	public static int readConfig(int key){
 		String configStr = read(configFileName);
-		if(configStr.length()!=8){
+		if(configStr.length()!=10){
 			return 0;
 		}else{
 			return CommonUtils.hexToDecimal(configStr.substring(key,key+2));
@@ -47,8 +49,8 @@ public class FileUtils {
 	public static String writeConfig(String text){
 		// 文件读写的时候是按位替换的，所以长度需要固定
 		String confStr = text;
-		if(text.length()>8){
-			confStr=text.substring(0, 8);
+		if(text.length()>10){
+			confStr=text.substring(0, 10);
 		}
 		write(configFileName,confStr);
 		return readConfig();
@@ -58,6 +60,21 @@ public class FileUtils {
 		String fileName = gpioFilePrefix+index;
 		return read(fileName);
 	}
+	
+	public static String readModel(){
+		return read(modelFile);
+	}
+	
+	public static String writeModel(String text){
+		// 文件读写的时候是按位替换的，所以长度需要固定
+		String modelStr = text;
+		if(text.length()>4){
+			modelStr=text.substring(0, 4);
+		}
+		write(modelFile,modelStr);
+		return readModel();
+	}
+	
 	
 	public static String writeGpioStatus(int index, String status){
 		String fileName = gpioFilePrefix+index;

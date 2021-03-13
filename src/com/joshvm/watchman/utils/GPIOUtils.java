@@ -4,6 +4,8 @@ import org.joshvm.j2me.dio.DeviceManager;
 import org.joshvm.j2me.dio.gpio.GPIOPin;
 import org.joshvm.j2me.dio.gpio.GPIOPinConfig;
 
+import com.joshvm.watchman.constant.Constants;
+
 public class GPIOUtils {
 
 	/**
@@ -38,7 +40,7 @@ public class GPIOUtils {
 	}
 	
 	public static boolean gpioSwitch(int index, String status) {
-		return gpioSwitch(index, "01".equals(status)?true:false);
+		return gpioSwitch(index, Constants.GPIO_ON.equals(status));
 	}
 	
 	public static boolean gpioSwitch(int index, boolean status) {
