@@ -1,16 +1,25 @@
 package com.joshvm.watchman.core;
 
 import com.joshvm.watchman.constant.Constants;
+import com.joshvm.watchman.mqtt.Publisher;
 import com.joshvm.watchman.utils.FileUtils;
 import com.joshvm.watchman.utils.GPIOUtils;
 
 public class ModelCheckThread extends Thread {
+	
+	private Publisher publisher;
+	public ModelCheckThread(Publisher publisher){
+		this.publisher=publisher;
+	}
 
 	public void run() {
 		int second = 1;
 		while (true) {
 			try {
 				String modelStr = FileUtils.readModel();
+				if(modelStr.length()==0){
+					modelStr = Constants.MODEL_DEFULT;
+				}
 				if (!Constants.MODEL_DEFULT.equals(modelStr) && modelStr.startsWith(Constants.MODEL_DOUBLE)) {
 					// 非手动模式,并且双泵需要执行切换
 					if (second % Constants.MODEL_SWITCH_TIME == 0) {
@@ -38,8 +47,13 @@ public class ModelCheckThread extends Thread {
 					}
 					second++;
 				}
-				System.out.println("[model] check:" + modelStr);
-				Thread.sleep(1000);
+				String sendStr = Constants.CLIENT_ID+","+Constants.FLG_MODEL + "," + modelStr;
+				System.out.println("[data] model:" + sendStr);
+				if(Constants.SEND_MQTT){
+					publisher.push(Constants.TOPIC_DATA, sendStr);
+				}
+				int sleepSecond = FileUtils.readConfig(FileUtils.SLEEP_MODEL);
+				Thread.sleep((sleepSecond == 0 ? 1 : sleepSecond) * 1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

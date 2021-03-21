@@ -17,10 +17,10 @@ public class FileUtils {
 	private static String configFileName = "config";
 	private static final String gpioFilePrefix = "gpio";
 	private static final String modelFile = "model";
-	public static final int SLEEP_WL=2;
-	public static final int SLEEP_ELE=4;
-	public static final int SLEEP_GPS=6;
-	public static final int SLEEP_GPIO=8;
+	public static final int SLEEP_UART=2;
+	public static final int SLEEP_GPS=4;
+	public static final int SLEEP_GPIO=6;
+	public static final int SLEEP_MODEL=8;
 
 	public static void main(String[] args) {
 
@@ -36,7 +36,8 @@ public class FileUtils {
 	public static int readConfig(int key){
 		String configStr = read(configFileName);
 		if(configStr.length()!=10){
-			return 0;
+			System.out.println("[error] configStr:"+configStr);
+			return 1;
 		}else{
 			return CommonUtils.hexToDecimal(configStr.substring(key,key+2));
 		}

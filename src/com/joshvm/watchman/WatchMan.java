@@ -9,9 +9,12 @@ import javax.microedition.io.StreamConnection;
 
 import com.joshvm.watchman.constant.Constants;
 import com.joshvm.watchman.core.GpioStatusThread;
+import com.joshvm.watchman.core.GpsThread;
 import com.joshvm.watchman.core.ModelCheckThread;
+import com.joshvm.watchman.core.UartReadThread;
+import com.joshvm.watchman.core.UartWriteThread;
 import com.joshvm.watchman.mqtt.Publisher;
-import com.joshvm.watchman.utils.CommonUtils;
+import com.joshvm.watchman.mqtt.Subscriber;
 import com.joshvm.watchman.utils.FileUtils;
 import com.joshvm.watchman.utils.GPIOUtils;
 
@@ -38,13 +41,12 @@ public class WatchMan {
 
 		System.out.println("[flg] Start WatchMan ...");
 		// 发布者建立连接,用来发送消息
-		// final Publisher publisher = new Publisher();
-		// publisher.connect();
-		Publisher publisher = null;
+		final Publisher publisher = new Publisher();
+		publisher.connect();
 
 		// 订阅者建立连接，用来接收指令和配置
-		// Subscriber subscriber = new Subscriber();
-		// subscriber.connect();
+		Subscriber subscriber = new Subscriber();
+		subscriber.connect();
 
 		// >>>状态恢复
 		System.out.println("[status] init");
@@ -55,19 +57,8 @@ public class WatchMan {
 			System.out.println("[status] gpio-" + currentIndex + ":" + currentStatus);
 			GPIOUtils.gpioSwitch(currentIndex, currentStatus);
 		}
-		// gpio上报状态
-		GpioStatusThread gpioStatusThread = new GpioStatusThread(publisher);
-		gpioStatusThread.start();
-		// gpio model 检查
-		ModelCheckThread modelCheckThread = new ModelCheckThread();
-		modelCheckThread.start();
-
 		// <<<状态恢复完成
 		System.out.println("[status] init succeed");
-
-		// gps数据
-		// GpsThread gpsThread = new GpsThread(publisher);
-		// gpsThread.start();
 
 		// 开启串口数据检测
 		try {
@@ -76,116 +67,32 @@ public class WatchMan {
 			streamConnection = (StreamConnection) Connector.open(host);
 			inputStream = streamConnection.openInputStream();
 			outputStream = streamConnection.openOutputStream();
-			final byte[] b = new byte[] { 0x01, 0x03, 0x01, 0x02, 0x00, 0x01, 0x24, 0x36 };
-			// 水位
-			new Thread(new Runnable() {
-				public void run() {
-					while (true) {
-						try {
-							byte cmd_query[] = { 1, 3, 1, 2, 0, 1, 36, 54 };
-							// outputStream.write(hexToByteArray("0103010200012436"));
-							outputStream.write(cmd_query, 0, 8);
-							outputStream.flush();
-
-							byte cmd_query2[] = { 1, 3, 1, 2, 0, 1, 36, 54 };
-							// outputStream.write(hexToByteArray("0103010200012436"));
-							outputStream.write(cmd_query2, 0, 8);
-							outputStream.flush();
-							// System.out.println("send:{0x01,
-							// 0x03,0x01,0x02,0x00,0x01,0x24,0x36}");
-							int sleepSecond = FileUtils.readConfig(FileUtils.SLEEP_WL);
-							Thread.sleep((sleepSecond == 0 ? 1 : sleepSecond) * 1000);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-					}
-				}
-
-			}).start();
-
-			// 电表
-			new Thread(new Runnable() {
-				public void run() {
-					while (true) {
-						try {
-
-							byte cmd_query[] = { 1, 3, 1, 2, 0, 1, 36, 54 };
-							// outputStream.write(hexToByteArray("0103010200012436"));
-							outputStream.write(cmd_query, 0, 8);
-							outputStream.flush();
-							// System.out.println("send:{0x01,
-							// 0x03,0x01,0x02,0x00,0x01,0x24,0x36}");
-							int sleepSecond = FileUtils.readConfig(FileUtils.SLEEP_ELE);
-							Thread.sleep((sleepSecond == 0 ? 1 : sleepSecond) * 1000);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-					}
-				}
-
-			}).start();
-
-			// 自定义指令
-			new Thread(new Runnable() {
-				public void run() {
-					while (true) {
-						try {
-							if(Constants.CMD_CUSTOM.length()>16){
-								byte cmd_query[] = new byte[8];
-								for(int i=0;i<cmd_query.length;i++){
-									cmd_query[i]=(byte) CommonUtils.hexToDecimal(Constants.CMD_CUSTOM.substring(i*2,(i+1)*2));
-								}
-								outputStream.write(cmd_query, 0, 8);
-								outputStream.flush();
-								System.out.println("[custom_cmd] run:"+Constants.CMD_CUSTOM);
-								Constants.CMD_CUSTOM="";
-							}
-							Thread.sleep(1000);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-					}
-				}
-
-			}).start();
-
-			int len = 0;
-			byte[] buffer = new byte[7];
-			// 读数据
-			while ((len = inputStream.read(buffer)) != -1) {
-				String data = CommonUtils.byte2hex(buffer, len);
-				data = data.replace((char) 32, (char) 0);// 替换空格
-				System.out.println("[data] waterLevel:" + data);
-				if (data.length() >= 14) {
-					String sendStr = "";
-					String index = data.substring(0, 2);
-					if ("1".equals(index)) {
-						String value = data.substring(6, 10);
-						sendStr = Constants.FLG_WL + "," + index + ":" + CommonUtils.hexToDecimal(value);
-					} else if ("2".equals(index)) {
-						String value = data.substring(6, 10);
-						sendStr = Constants.FLG_WL + "," + index + ":" + CommonUtils.hexToDecimal(value);
-					} else if ("3".equals(index)) {
-						String value = data.substring(6, 10);
-						sendStr = Constants.FLG_ELE + "," + index + ":" + CommonUtils.hexToDecimal(value);
-					} else {
-						System.out.println("[error] index_error:");
-					}
-					// publisher.push(Constants.TOPIC_DATA, sendStr);
-					System.out.println("[data] readStr:" + sendStr);
-				} else {
-					System.out.println("[data] readStr: length error");
-				}
-			}
-
 		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// 串口水位、电表
+		UartWriteThread wlThread = new UartWriteThread(outputStream);
+		wlThread.start();
+		// 获取串口结果结果推送
+		UartReadThread uartReadThread = new UartReadThread(inputStream, publisher);
+		uartReadThread.start();
+		// gps数据
+		GpsThread gpsThread = new GpsThread(publisher);
+		gpsThread.start();
+		// gpio上报状态
+		GpioStatusThread gpioStatusThread = new GpioStatusThread(publisher);
+		gpioStatusThread.start();
+		// gpio model 检查&上报
+		ModelCheckThread modelCheckThread = new ModelCheckThread(publisher);
+		modelCheckThread.start();
 
+		// 死循环，守护进程
+		try {
+			while (true) {
+				Thread.sleep(1000 * 10);
+				System.out.println("[flg] Alive WatchMan ...");
+			}
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 

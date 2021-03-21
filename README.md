@@ -16,5 +16,8 @@ adb push JOSHDTU_LSQADB_V1/watchman.jar /vendor/data
 adb shell cldc_vm -int -cp /vendor/data/watchman.jar com.joshvm.watchman.WatchMan
 
 action:
-0103141D
-020A01
+868343045338998,0102040608
+868343045338998,020A01
+868343045338998,030102
+
+data:

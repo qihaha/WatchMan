@@ -6,6 +6,8 @@ import java.io.OutputStream;
 import javax.microedition.io.Connector;
 import javax.microedition.io.StreamConnection;
 
+import com.joshvm.watchman.constant.Constants;
+
 public class UartUtils {
 	private static StreamConnection streamConnection;
 	private InputStream inputStream;
@@ -31,7 +33,9 @@ public class UartUtils {
 	public void sendCmd(byte[] cmd) {
 		try {
 			outputStream.write(cmd, 0, cmd.length);
-			System.out.println("[debug] sendCmd:" + cmd);
+			if(Constants.DEBUG){
+				System.out.println("[debug] sendCmd:" + cmd);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

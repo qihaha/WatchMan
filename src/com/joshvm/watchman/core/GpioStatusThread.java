@@ -21,11 +21,17 @@ public class GpioStatusThread extends Thread{
 				for (int i = 0; i < Constants.indexList.length; i++) {
 					int currentIndex = Constants.indexList[i];
 					String currentStatus = FileUtils.readGpioStatus(currentIndex);
-					statusStr+=currentIndex+":"+currentStatus+"-"+currentDate.getTime()+","; 
+					if(i==Constants.indexList.length-1){
+						statusStr+=currentIndex+":"+currentStatus+"-"+currentDate.getTime(); 
+					}else{
+						statusStr+=currentIndex+":"+currentStatus+"-"+currentDate.getTime()+";"; 
+					}
 				}
-				
-				System.out.println("[data] gpio:" + statusStr);
-//				publisher.push(Constants.TOPIC_DATA, Constants.FLG_GPIO + "," + statusStr);
+				String sendStr = Constants.CLIENT_ID+","+Constants.FLG_GPIO + "," + statusStr;
+				System.out.println("[data] gpio:" + sendStr);
+				if(Constants.SEND_MQTT){
+					publisher.push(Constants.TOPIC_DATA, sendStr);
+				}
 				int sleepSecond = FileUtils.readConfig(FileUtils.SLEEP_GPIO);
 				Thread.sleep((sleepSecond == 0 ? 1 : sleepSecond) * 1000);
 			} catch (InterruptedException e) {

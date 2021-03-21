@@ -26,12 +26,12 @@ public class GpsUtils {
 	
 	private static String getLocationString(Location location) {
 		if (location == null) {
-			return "nulla";
+			return "null";
 		}
 		System.out.println("dddd:"+location.toString());
 		QualifiedCoordinates coodinate = location.getQualifiedCoordinates();
 		if (coodinate == null) {
-			return "nullb";
+			return "null";
 		}
 		StringBuffer buf = new StringBuffer();
 		buf.append("latitude:" + coodinate.getLatitude()).append(",");

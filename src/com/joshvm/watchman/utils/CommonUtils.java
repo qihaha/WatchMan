@@ -105,6 +105,10 @@ public class CommonUtils {
         }
         return sbf.toString().trim();
     }
+    
+    public static void main(String[] args){
+    	System.out.println(CommonUtils.hexToDecimal("07A1"));
+    }
 	
 
 }
