@@ -35,6 +35,11 @@ public class Constants {
 	public static final int GPIO_BAO2 = 15;
 	public static final int GPIO_XUNHUAN = 16;
 	public static final int GPIO_CHU = 17;
+	// 实验室接线
+//	public static final int GPIO_BAO1 = 14; // 回流泵
+//	public static final int GPIO_BAO2 = 15; // 风机 
+//	public static final int GPIO_XUNHUAN = 16;  //进水
+//	public static final int GPIO_CHU = 17;  //出水
 
 	public static final int MODEL_SWITCH_TIME = 24 * 60 * 60;
 	public static final String MODEL_DEFULT = "0000";
