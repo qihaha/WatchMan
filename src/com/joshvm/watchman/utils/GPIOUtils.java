@@ -58,4 +58,18 @@ public class GPIOUtils {
 		}
 		return relStatus;
 	}
+	
+	public static String gpioStatus(int index){
+		int relStatus = 0;
+		try{
+		GPIOPinConfig inputGPIOPinConfig = new GPIOPinConfig(GPIOPinConfig.UNASSIGNED, index, 
+				GPIOPinConfig.DIR_INPUT_ONLY, GPIOPinConfig.MODE_INPUT_PULL_UP, 
+				GPIOPinConfig.TRIGGER_LOW_LEVEL, true);
+		GPIOPin inputGPIOPin = (GPIOPin) DeviceManager.open(inputGPIOPinConfig, DeviceManager.EXCLUSIVE);
+		relStatus = inputGPIOPin.getValue()?1:0;
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ""+relStatus;
+	}
 }

@@ -51,5 +51,7 @@ public class Constants {
 
 	public static final boolean SEND_MQTT = true;
 	public static final boolean DEBUG = true;
+	public static final boolean GPIO_STATUS = true;// 真状态检测
+	
 
 }

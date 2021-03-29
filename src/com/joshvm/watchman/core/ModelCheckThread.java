@@ -30,6 +30,13 @@ public class ModelCheckThread extends Thread {
 						String jin02 = FileUtils.readGpioStatus(Constants.GPIO_JIN2);
 						String bao01 = FileUtils.readGpioStatus(Constants.GPIO_BAO1);
 						String bao02 = FileUtils.readGpioStatus(Constants.GPIO_BAO2);
+						if (Constants.GPIO_STATUS){
+							// gpio获取状态
+							jin01 = GPIOUtils.gpioStatus(Constants.GPIO_JIN1);
+							jin02 = GPIOUtils.gpioStatus(Constants.GPIO_JIN2);
+							bao01 = GPIOUtils.gpioStatus(Constants.GPIO_BAO1);
+							bao02 = GPIOUtils.gpioStatus(Constants.GPIO_BAO2);
+						}
 						if (Constants.GPIO_ON.endsWith(jin01)) {
 							GPIOUtils.gpioSwitch(Constants.GPIO_JIN1, Constants.GPIO_OFF);
 							GPIOUtils.gpioSwitch(Constants.GPIO_JIN2, Constants.GPIO_ON);

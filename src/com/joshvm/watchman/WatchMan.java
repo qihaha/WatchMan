@@ -48,17 +48,17 @@ public class WatchMan {
 		Subscriber subscriber = new Subscriber();
 		subscriber.connect();
 
-		// >>>状态恢复
-		System.out.println("[status] init");
-		// gpio状态恢复
-		for (int i = 0; i < Constants.indexList.length; i++) {
-			int currentIndex = Constants.indexList[i];
-			String currentStatus = FileUtils.readGpioStatus(currentIndex);
-			System.out.println("[status] gpio-" + currentIndex + ":" + currentStatus);
-			GPIOUtils.gpioSwitch(currentIndex, currentStatus);
+		if (Constants.GPIO_STATUS){
+			// gpio状态恢复
+			System.out.println("[status] init");
+			for (int i = 0; i < Constants.indexList.length; i++) {
+				int currentIndex = Constants.indexList[i];
+				String currentStatus = FileUtils.readGpioStatus(currentIndex);
+				System.out.println("[status] gpio-" + currentIndex + ":" + currentStatus);
+				GPIOUtils.gpioSwitch(currentIndex, currentStatus);
+			}
+			System.out.println("[status] init succeed");
 		}
-		// <<<状态恢复完成
-		System.out.println("[status] init succeed");
 
 		// 开启串口数据检测
 		try {

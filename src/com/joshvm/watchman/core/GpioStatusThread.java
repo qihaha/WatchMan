@@ -5,6 +5,7 @@ import java.util.Date;
 import com.joshvm.watchman.constant.Constants;
 import com.joshvm.watchman.mqtt.Publisher;
 import com.joshvm.watchman.utils.FileUtils;
+import com.joshvm.watchman.utils.GPIOUtils;
 
 public class GpioStatusThread extends Thread{
 
@@ -21,6 +22,9 @@ public class GpioStatusThread extends Thread{
 				for (int i = 0; i < Constants.indexList.length; i++) {
 					int currentIndex = Constants.indexList[i];
 					String currentStatus = FileUtils.readGpioStatus(currentIndex);
+					if (Constants.GPIO_STATUS){
+						currentStatus = GPIOUtils.gpioStatus(currentIndex);
+					}
 					if(i==Constants.indexList.length-1){
 						statusStr+=currentIndex+":"+currentStatus+"-"+currentDate.getTime(); 
 					}else{
