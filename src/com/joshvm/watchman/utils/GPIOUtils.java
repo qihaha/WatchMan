@@ -52,6 +52,7 @@ public class GPIOUtils {
 			outputGpio = (GPIOPin) DeviceManager.open(cfgOutput, DeviceManager.EXCLUSIVE);
 			outputGpio.setValue(status);
 			relStatus = outputGpio.getValue();
+			outputGpio.close();
 			FileUtils.writeGpioStatus(index, relStatus?"1":"0");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -67,8 +68,10 @@ public class GPIOUtils {
 				GPIOPinConfig.TRIGGER_LOW_LEVEL, true);
 		GPIOPin inputGPIOPin = (GPIOPin) DeviceManager.open(inputGPIOPinConfig, DeviceManager.EXCLUSIVE);
 		relStatus = inputGPIOPin.getValue()?1:0;
+		inputGPIOPin.close();
 		}catch (Exception e) {
 			e.printStackTrace();
+			return e.getMessage();
 		}
 		return ""+relStatus;
 	}
