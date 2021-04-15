@@ -32,13 +32,13 @@ public class WatchMan {
 	private static String com = "COM0";
 	// 波特率
 	private static int baudrate = 9600;
-
+	
 	private static StreamConnection streamConnection;
 	private static InputStream inputStream;
 	private static OutputStream outputStream;
 
 	public static void main(String[] args) {
-
+		
 		System.out.println("[flg] Start WatchMan ...");
 		// 发布者建立连接,用来发送消息
 		final Publisher publisher = new Publisher();
@@ -48,7 +48,7 @@ public class WatchMan {
 		Subscriber subscriber = new Subscriber();
 		subscriber.connect();
 
-		if (Constants.GPIO_STATUS){
+		if (!Constants.GPIO_STATUS){
 			// gpio状态恢复
 			System.out.println("[status] init");
 			for (int i = 0; i < Constants.indexList.length; i++) {

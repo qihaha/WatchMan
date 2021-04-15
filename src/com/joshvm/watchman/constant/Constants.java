@@ -35,6 +35,7 @@ public class Constants {
 	public static final int GPIO_BAO2 = 15;
 	public static final int GPIO_XUNHUAN = 16;
 	public static final int GPIO_CHU = 17;
+	
 	// 实验室接线
 //	public static final int GPIO_BAO1 = 14; // 回流泵
 //	public static final int GPIO_BAO2 = 15; // 风机 
@@ -45,13 +46,13 @@ public class Constants {
 	public static final String MODEL_DEFULT = "0000";
 	public static final String MODEL_SINGLE = "01";
 	public static final String MODEL_DOUBLE = "02";
-	public static final String MODEL_STOP = "01";
-	public static final String MODEL_XIAOHUA = "02";
-	public static final String MODEL_TUODAN = "03";
+	public static final String MODEL_XIAOHUA = "01";
+	public static final String MODEL_TUODAN = "02";
+	public static final String MODEL_STOP = "03";
 
 	public static final boolean SEND_MQTT = true;
 	public static final boolean DEBUG = true;
-	public static final boolean GPIO_STATUS = true;// 真状态检测
+	public static final boolean GPIO_STATUS = false;// 真状态检测
 	
 
 }

@@ -44,20 +44,18 @@ public class GPIOUtils {
 	}
 	
 	public static boolean gpioSwitch(int index, boolean status) {
-		boolean relStatus = status;
 		try {
 			cfgOutput = new GPIOPinConfig(GPIOPinConfig.UNASSIGNED, index,
 					GPIOPinConfig.DIR_OUTPUT_ONLY, GPIOPinConfig.MODE_OUTPUT_OPEN_DRAIN, GPIOPinConfig.TRIGGER_NONE,
 					false);
 			outputGpio = (GPIOPin) DeviceManager.open(cfgOutput, DeviceManager.EXCLUSIVE);
 			outputGpio.setValue(status);
-			relStatus = outputGpio.getValue();
 			outputGpio.close();
-			FileUtils.writeGpioStatus(index, relStatus?"1":"0");
+			FileUtils.writeGpioStatus(index, status?"1":"0");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return relStatus;
+		return status;
 	}
 	
 	public static String gpioStatus(int index){

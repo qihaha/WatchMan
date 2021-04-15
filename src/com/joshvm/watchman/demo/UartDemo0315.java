@@ -3,11 +3,8 @@ package com.joshvm.watchman.demo;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import javax.microedition.io.Connector;
 import javax.microedition.io.StreamConnection;
-
-import org.joshvm.util.ArrayList;
 
 public class UartDemo0315 {
 	// 根据硬件及接线设定串口的com口
