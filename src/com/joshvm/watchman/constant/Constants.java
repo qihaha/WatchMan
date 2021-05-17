@@ -29,11 +29,11 @@ public class Constants {
 	public static final String GPIO_OFF = "00";
 	public static final String GPIO_ON = "01";
 	public static final int[] indexList = { 10, 11, 14, 15, 16, 17, 20, 23 };
-	public static final int GPIO_JIN1 = 10;
-	public static final int GPIO_JIN2 = 11;
-	public static final int GPIO_BAO1 = 14;
+	public static final int GPIO_JIN1 = 16;
+	public static final int GPIO_JIN2 = 16;
+	public static final int GPIO_BAO1 = 15;
 	public static final int GPIO_BAO2 = 15;
-	public static final int GPIO_XUNHUAN = 16;
+	public static final int GPIO_XUNHUAN = 14;
 	public static final int GPIO_CHU = 17;
 	
 	// 实验室接线
